@@ -1,0 +1,38 @@
+base:
+# stuff pertaining to everything
+  random_state: 42
+
+data_load:
+# data ins and outs
+  dataset_csv: 'data/raw/AirQualityUCI.csv'
+  #features_path: 'data/processed/featured_iris.csv'
+
+featurize:
+  features_path: 'data/processed/AirQualityUCI_featurized.csv'
+  #target_column: CO(GT)
+  cols_to_drop: ['NMHC(GT)','Date_Time','C6H6(GT)','PT08.S1(CO)','PT08.S2(NMHC)','PT08.S3(NOx)']
+
+data_split:
+  test_size: 0.2
+  #trainset_path: 'data/processed/train_penguins.csv'
+  #testset_path: 'data/processed/test_penguins.csv'
+
+# training related items
+train:
+  cv: 3
+  estimator_name: rdm_forest
+  estimators:
+    rdm_forest: # sklearn.linear_model.LogisticRegression
+      param_grid: # params of GridSearchCV constructor
+        n_estimators: [10, 20, 50]
+        max_features: ['auto', 'sqrt']
+        max_depth: [5, 10]
+        min_samples_split: [2, 5]
+        min_samples_leaf: [1, 2]
+  #model_path: models/model.joblib
+
+
+reports:
+# metrics, reports, jsons, etc. the outputs
+  #metrics_file: 'reports/metrics.json'
+  #confusion_matrix_image: 'reports/confusion_matrix.png'
