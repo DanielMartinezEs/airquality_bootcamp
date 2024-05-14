@@ -8,6 +8,8 @@ pandas
 jupyter
 #jupyter_contrib_nbextensions
 matplotlib
+seaborn
+pickleshare
 
 ################
 #Default Cookie Cutter
