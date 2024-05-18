@@ -25,15 +25,15 @@ data_split:
 
 train:
 # training related items
-  cv: 3
+  cv: 4
   estimator_name: rdm_forest
   estimators:
     rdm_forest:
       param_grid: # params of GridSearchCV constructor
-        n_estimators: [10, 20, 50]
+        n_estimators: [15, 20, 50]
         max_features: ['sqrt']
-        max_depth: [5, 10]
-        min_samples_split: [2, 5]
+        max_depth: [5, 10, 20]
+        min_samples_split: [2, 3, 5]
         min_samples_leaf: [1, 2]
   model_path: models/model.joblib
 

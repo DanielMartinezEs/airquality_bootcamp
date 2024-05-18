@@ -29,8 +29,8 @@ stages:
       size: 919505
     - path: src/stages/featurize.py
       hash: md5
-      md5: 4b6fb8c1738e7e85113a5d21d89c2c94
-      size: 6526
+      md5: 4a6781327c97fb384bf0687a98e45084
+      size: 6524
     params:
       params.yaml:
         base:
@@ -50,23 +50,23 @@ stages:
     outs:
     - path: data/processed/csv_X_scaled_featurized.csv
       hash: md5
-      md5: 113c2cc5fd8d020613ea3dc388a04995
-      size: 553018
+      md5: 005bcd691519e9eb0e7810c9e1016bc0
+      size: 551509
     - path: data/processed/csv_y_featurized.csv
       hash: md5
-      md5: b401384bb97d641c2d7b733153632db6
-      size: 46153
+      md5: 52e3fd08e4be881d7b40682492befc00
+      size: 71388
   data_split:
     cmd: python src/stages/data_split.py --config=params.yaml
     deps:
     - path: data/processed/csv_X_scaled_featurized.csv
       hash: md5
-      md5: 113c2cc5fd8d020613ea3dc388a04995
-      size: 553018
+      md5: 005bcd691519e9eb0e7810c9e1016bc0
+      size: 551509
     - path: data/processed/csv_y_featurized.csv
       hash: md5
-      md5: b401384bb97d641c2d7b733153632db6
-      size: 46153
+      md5: 52e3fd08e4be881d7b40682492befc00
+      size: 71388
     - path: src/stages/data_split.py
       hash: md5
       md5: 741ef2071eda00a154c44be764a50216
@@ -87,55 +87,55 @@ stages:
     outs:
     - path: data/splitdata/X_test.csv
       hash: md5
-      md5: fdf5166e08b96d2ee5257c8ada5a0741
-      size: 106845
+      md5: 0fda18af6ca7238e9d94e05b8aa7642a
+      size: 106794
     - path: data/splitdata/X_test_scaled.csv
       hash: md5
-      md5: 104f516361ee09f08155249c766c9572
-      size: 252088
+      md5: 40f062eaae54a1c6b0b282a71d2fb793
+      size: 252007
     - path: data/splitdata/X_train.csv
       hash: md5
-      md5: 94440e35594533f1df9674fecc931b8b
-      size: 445603
+      md5: 869dc59267506174023963a197aabc52
+      size: 444263
     - path: data/splitdata/X_train_scaled.csv
       hash: md5
-      md5: 3e6ffc2d24ab069ca49aa4111b7673ea
-      size: 1002122
+      md5: 91473b80455ae74fdd181891eaa04ff3
+      size: 1002273
     - path: data/splitdata/y_test.csv
       hash: md5
-      md5: a5bfabf412b82e71fe26f11617913379
-      size: 9238
+      md5: 6fc0db9772d185b1182235fa5cd006d4
+      size: 10512
     - path: data/splitdata/y_train.csv
       hash: md5
-      md5: 497bab9529e298fa6260f912704cff47
-      size: 36923
+      md5: 9d0af3b2387925d6a91596aab85d3082
+      size: 59202
   train:
     cmd: python src/stages/train.py --config=params.yaml
     deps:
     - path: data/splitdata/X_test.csv
       hash: md5
-      md5: fdf5166e08b96d2ee5257c8ada5a0741
-      size: 106845
+      md5: 0fda18af6ca7238e9d94e05b8aa7642a
+      size: 106794
     - path: data/splitdata/X_test_scaled.csv
       hash: md5
-      md5: 104f516361ee09f08155249c766c9572
-      size: 252088
+      md5: 40f062eaae54a1c6b0b282a71d2fb793
+      size: 252007
     - path: data/splitdata/X_train.csv
       hash: md5
-      md5: 94440e35594533f1df9674fecc931b8b
-      size: 445603
+      md5: 869dc59267506174023963a197aabc52
+      size: 444263
     - path: data/splitdata/X_train_scaled.csv
       hash: md5
-      md5: 3e6ffc2d24ab069ca49aa4111b7673ea
-      size: 1002122
+      md5: 91473b80455ae74fdd181891eaa04ff3
+      size: 1002273
     - path: data/splitdata/y_test.csv
       hash: md5
-      md5: a5bfabf412b82e71fe26f11617913379
-      size: 9238
+      md5: 6fc0db9772d185b1182235fa5cd006d4
+      size: 10512
     - path: data/splitdata/y_train.csv
       hash: md5
-      md5: 497bab9529e298fa6260f912704cff47
-      size: 36923
+      md5: 9d0af3b2387925d6a91596aab85d3082
+      size: 59202
     - path: src/stages/train.py
       hash: md5
       md5: f2bd45629bcb970dd817675a5b02f00c
@@ -146,13 +146,13 @@ stages:
           random_state: 42
           log_level: INFO
         train:
-          cv: 3
+          cv: 4
           estimator_name: rdm_forest
           estimators:
             rdm_forest:
               param_grid:
                 n_estimators:
-                - 10
+                - 15
                 - 20
                 - 50
                 max_features:
@@ -160,8 +160,10 @@ stages:
                 max_depth:
                 - 5
                 - 10
+                - 20
                 min_samples_split:
                 - 2
+                - 3
                 - 5
                 min_samples_leaf:
                 - 1
@@ -170,31 +172,31 @@ stages:
     outs:
     - path: models/model.joblib
       hash: md5
-      md5: 2a92f888721e723d13b44fef51c6c647
-      size: 672625
+      md5: 0cc6b9c32cda681ca2d04f0f2697fd98
+      size: 4186401
   evaluate:
     cmd: python src/stages/evaluate.py --config=params.yaml
     deps:
     - path: data/splitdata/X_test_scaled.csv
       hash: md5
-      md5: 104f516361ee09f08155249c766c9572
-      size: 252088
+      md5: 40f062eaae54a1c6b0b282a71d2fb793
+      size: 252007
     - path: data/splitdata/X_train_scaled.csv
       hash: md5
-      md5: 3e6ffc2d24ab069ca49aa4111b7673ea
-      size: 1002122
+      md5: 91473b80455ae74fdd181891eaa04ff3
+      size: 1002273
     - path: data/splitdata/y_test.csv
       hash: md5
-      md5: a5bfabf412b82e71fe26f11617913379
-      size: 9238
+      md5: 6fc0db9772d185b1182235fa5cd006d4
+      size: 10512
     - path: data/splitdata/y_train.csv
       hash: md5
-      md5: 497bab9529e298fa6260f912704cff47
-      size: 36923
+      md5: 9d0af3b2387925d6a91596aab85d3082
+      size: 59202
     - path: models/model.joblib
       hash: md5
-      md5: 2a92f888721e723d13b44fef51c6c647
-      size: 672625
+      md5: 0cc6b9c32cda681ca2d04f0f2697fd98
+      size: 4186401
     - path: src/stages/evaluate.py
       hash: md5
       md5: fdf51b57cc82197d146ff1d39da88baa
@@ -210,5 +212,5 @@ stages:
     outs:
     - path: reports/metrics.json
       hash: md5
-      md5: 057265ae91852153f2bc9ce8c4d78316
-      size: 218
+      md5: 1d86a399f185a75a196e7a51dc0eaf19
+      size: 219

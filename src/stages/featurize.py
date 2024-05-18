@@ -46,7 +46,7 @@ def featurize(config_path: Text) -> None:
 
     # Se define criterio individual (métodos de imputación) según cada variable
     imputation_methods = {
-        'CO(GT)': 'median',
+        'CO(GT)': 'mean',
         'NOx(GT)': 'mean',
         'NO2(GT)': 'mean',
         'PT08.S4(NO2)': 'mean',
