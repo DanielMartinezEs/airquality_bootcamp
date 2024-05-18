@@ -1,0 +1,70 @@
+stages:
+  data_load:
+    cmd: python src/stages/data_load.py --config=params.yaml
+    deps:
+    - src/stages/data_load.py
+    params:
+    - base
+    - data_load
+    outs:
+    - data/raw/AirQualityUCI_cleaned.csv
+
+  featurize:
+    cmd: python src/stages/featurize.py --config=params.yaml
+    deps:
+    - data/raw/AirQualityUCI_cleaned.csv
+    - src/stages/featurize.py
+    params:
+    - base
+    - featurize
+    outs:
+    - data/processed/csv_X_scaled_featurized.csv
+    - data/processed/csv_y_featurized.csv
+
+  data_split:
+    cmd: python src/stages/data_split.py --config=params.yaml
+    deps:
+    - data/processed/csv_X_scaled_featurized.csv
+    - data/processed/csv_y_featurized.csv
+    - src/stages/data_split.py
+    params:
+    - base
+    - data_split
+    outs:
+    - data/splitdata/X_train.csv
+    - data/splitdata/X_test.csv
+    - data/splitdata/X_train_scaled.csv
+    - data/splitdata/X_test_scaled.csv
+    - data/splitdata/y_train.csv
+    - data/splitdata/y_test.csv
+
+  train:
+    cmd: python src/stages/train.py --config=params.yaml
+    deps:
+    - data/splitdata/X_train.csv
+    - data/splitdata/X_test.csv
+    - data/splitdata/X_train_scaled.csv
+    - data/splitdata/X_test_scaled.csv
+    - data/splitdata/y_train.csv
+    - data/splitdata/y_test.csv
+    - src/stages/train.py
+    params:
+    - base
+    - train
+    outs:
+    - models/model.joblib
+  
+  evaluate:
+    cmd: python src/stages/evaluate.py --config=params.yaml
+    deps:
+    - data/splitdata/X_train_scaled.csv
+    - data/splitdata/X_test_scaled.csv
+    - data/splitdata/y_train.csv
+    - data/splitdata/y_test.csv
+    - models/model.joblib 
+    - src/stages/evaluate.py
+    params:
+    - base
+    - evaluate
+    outs:
+    - reports/metrics.json

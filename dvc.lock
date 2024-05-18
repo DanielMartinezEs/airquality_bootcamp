@@ -1,0 +1,214 @@
+schema: '2.0'
+stages:
+  data_load:
+    cmd: python src/stages/data_load.py --config=params.yaml
+    deps:
+    - path: src/stages/data_load.py
+      hash: md5
+      md5: 532ffdc20b6b7c37222b1bd7ad382a4c
+      size: 1513
+    params:
+      params.yaml:
+        base:
+          random_state: 42
+          log_level: INFO
+        data_load:
+          dataset_csv: data/raw/AirQualityUCI.csv
+          dataset_csv_cleaned: data/raw/AirQualityUCI_cleaned.csv
+    outs:
+    - path: data/raw/AirQualityUCI_cleaned.csv
+      hash: md5
+      md5: 8e378a16c33f1b03f30ebadb3574ac99
+      size: 919505
+  featurize:
+    cmd: python src/stages/featurize.py --config=params.yaml
+    deps:
+    - path: data/raw/AirQualityUCI_cleaned.csv
+      hash: md5
+      md5: 8e378a16c33f1b03f30ebadb3574ac99
+      size: 919505
+    - path: src/stages/featurize.py
+      hash: md5
+      md5: 4b6fb8c1738e7e85113a5d21d89c2c94
+      size: 6526
+    params:
+      params.yaml:
+        base:
+          random_state: 42
+          log_level: INFO
+        featurize:
+          X_scaled_csv_path: data/processed/csv_X_scaled_featurized.csv
+          y_csv_path: data/processed/csv_y_featurized.csv
+          cols_to_drop:
+          - Date
+          - Time
+          - NMHC(GT)
+          - C6H6(GT)
+          - PT08.S1(CO)
+          - PT08.S2(NMHC)
+          - PT08.S3(NOx)
+    outs:
+    - path: data/processed/csv_X_scaled_featurized.csv
+      hash: md5
+      md5: 113c2cc5fd8d020613ea3dc388a04995
+      size: 553018
+    - path: data/processed/csv_y_featurized.csv
+      hash: md5
+      md5: b401384bb97d641c2d7b733153632db6
+      size: 46153
+  data_split:
+    cmd: python src/stages/data_split.py --config=params.yaml
+    deps:
+    - path: data/processed/csv_X_scaled_featurized.csv
+      hash: md5
+      md5: 113c2cc5fd8d020613ea3dc388a04995
+      size: 553018
+    - path: data/processed/csv_y_featurized.csv
+      hash: md5
+      md5: b401384bb97d641c2d7b733153632db6
+      size: 46153
+    - path: src/stages/data_split.py
+      hash: md5
+      md5: 741ef2071eda00a154c44be764a50216
+      size: 2919
+    params:
+      params.yaml:
+        base:
+          random_state: 42
+          log_level: INFO
+        data_split:
+          test_size: 0.2
+          X_train_csv_path: data/splitdata/X_train.csv
+          X_test_csv_path: data/splitdata/X_test.csv
+          X_train_scaled_csv_path: data/splitdata/X_train_scaled.csv
+          X_test_scaled_csv_path: data/splitdata/X_test_scaled.csv
+          y_train_csv_path: data/splitdata/y_train.csv
+          y_test_csv_path: data/splitdata/y_test.csv
+    outs:
+    - path: data/splitdata/X_test.csv
+      hash: md5
+      md5: fdf5166e08b96d2ee5257c8ada5a0741
+      size: 106845
+    - path: data/splitdata/X_test_scaled.csv
+      hash: md5
+      md5: 104f516361ee09f08155249c766c9572
+      size: 252088
+    - path: data/splitdata/X_train.csv
+      hash: md5
+      md5: 94440e35594533f1df9674fecc931b8b
+      size: 445603
+    - path: data/splitdata/X_train_scaled.csv
+      hash: md5
+      md5: 3e6ffc2d24ab069ca49aa4111b7673ea
+      size: 1002122
+    - path: data/splitdata/y_test.csv
+      hash: md5
+      md5: a5bfabf412b82e71fe26f11617913379
+      size: 9238
+    - path: data/splitdata/y_train.csv
+      hash: md5
+      md5: 497bab9529e298fa6260f912704cff47
+      size: 36923
+  train:
+    cmd: python src/stages/train.py --config=params.yaml
+    deps:
+    - path: data/splitdata/X_test.csv
+      hash: md5
+      md5: fdf5166e08b96d2ee5257c8ada5a0741
+      size: 106845
+    - path: data/splitdata/X_test_scaled.csv
+      hash: md5
+      md5: 104f516361ee09f08155249c766c9572
+      size: 252088
+    - path: data/splitdata/X_train.csv
+      hash: md5
+      md5: 94440e35594533f1df9674fecc931b8b
+      size: 445603
+    - path: data/splitdata/X_train_scaled.csv
+      hash: md5
+      md5: 3e6ffc2d24ab069ca49aa4111b7673ea
+      size: 1002122
+    - path: data/splitdata/y_test.csv
+      hash: md5
+      md5: a5bfabf412b82e71fe26f11617913379
+      size: 9238
+    - path: data/splitdata/y_train.csv
+      hash: md5
+      md5: 497bab9529e298fa6260f912704cff47
+      size: 36923
+    - path: src/stages/train.py
+      hash: md5
+      md5: f2bd45629bcb970dd817675a5b02f00c
+      size: 2454
+    params:
+      params.yaml:
+        base:
+          random_state: 42
+          log_level: INFO
+        train:
+          cv: 3
+          estimator_name: rdm_forest
+          estimators:
+            rdm_forest:
+              param_grid:
+                n_estimators:
+                - 10
+                - 20
+                - 50
+                max_features:
+                - sqrt
+                max_depth:
+                - 5
+                - 10
+                min_samples_split:
+                - 2
+                - 5
+                min_samples_leaf:
+                - 1
+                - 2
+          model_path: models/model.joblib
+    outs:
+    - path: models/model.joblib
+      hash: md5
+      md5: 2a92f888721e723d13b44fef51c6c647
+      size: 672625
+  evaluate:
+    cmd: python src/stages/evaluate.py --config=params.yaml
+    deps:
+    - path: data/splitdata/X_test_scaled.csv
+      hash: md5
+      md5: 104f516361ee09f08155249c766c9572
+      size: 252088
+    - path: data/splitdata/X_train_scaled.csv
+      hash: md5
+      md5: 3e6ffc2d24ab069ca49aa4111b7673ea
+      size: 1002122
+    - path: data/splitdata/y_test.csv
+      hash: md5
+      md5: a5bfabf412b82e71fe26f11617913379
+      size: 9238
+    - path: data/splitdata/y_train.csv
+      hash: md5
+      md5: 497bab9529e298fa6260f912704cff47
+      size: 36923
+    - path: models/model.joblib
+      hash: md5
+      md5: 2a92f888721e723d13b44fef51c6c647
+      size: 672625
+    - path: src/stages/evaluate.py
+      hash: md5
+      md5: fdf51b57cc82197d146ff1d39da88baa
+      size: 3797
+    params:
+      params.yaml:
+        base:
+          random_state: 42
+          log_level: INFO
+        evaluate:
+          reports_dir: reports
+          metrics_file: metrics.json
+    outs:
+    - path: reports/metrics.json
+      hash: md5
+      md5: 057265ae91852153f2bc9ce8c4d78316
+      size: 218
