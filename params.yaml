@@ -38,7 +38,8 @@ train:
   model_path: models/model.joblib
 
 
-reports:
+evaluate:
 # metrics, reports, jsons, etc. the outputs
-  #metrics_file: 'reports/metrics.json'
+  reports_dir: reports
+  metrics_file: 'metrics.json'
   #confusion_matrix_image: 'reports/confusion_matrix.png'

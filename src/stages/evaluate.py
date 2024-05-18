@@ -6,6 +6,9 @@ import yaml
 import os
 import sys
 
+import json
+from pathlib import Path
+
 import joblib
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 
@@ -72,6 +75,36 @@ def evaluate(config_path: Text) -> None:
     # Imprimir los resultados
     print(scores.to_string(index=False))
     
+    logger.info('Starting saving metrics to JSON')
+    
+    # Crear el directorio de informes si no existe
+    reports_folder = Path(config['evaluate']['reports_dir'])
+    reports_folder.mkdir(parents=True, exist_ok=True)
+    
+    # Ruta del archivo JSON
+    metrics_json_path = reports_folder / config['evaluate']['metrics_file']
+    
+    # Guardar las métricas en un archivo JSON
+    metrics = {
+        'R2': {
+            'Train': scores['Train'][0],
+            'Test': scores['Test'][0]
+        },
+        'RMSE': {
+            'Train': scores['Train'][1],
+            'Test': scores['Test'][1]
+        },
+        'MAE': {
+            'Train': scores['Train'][2],
+            'Test': scores['Test'][2]
+        }
+    }
+
+    with open(metrics_json_path, 'w') as json_file:
+        json.dump(metrics, json_file, indent=4)
+    
+    logger.info(f'Metrics saved to JSON: {metrics_json_path}')
+    
     logger.info('Evaluate completed')
     
 
@@ -82,3 +115,5 @@ if __name__ == '__main__':
     args = args_parser.parse_args()
 
     evaluate(config_path=args.config)
+    
+    
