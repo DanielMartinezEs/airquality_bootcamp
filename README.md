@@ -1,5 +1,3 @@
-# course-ds-base
-
 ## Preparation
 
 ### 1. Fork / Clone this repository
