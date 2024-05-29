@@ -9,10 +9,10 @@ import pandas as pd
 app = FastAPI()
 
 class Item(BaseModel):
-    NOx_GT: float
-    NO2_GT: float
-    PT08_S4_NO2: float
-    PT08_S5_O3: float
+    NOx(GT): float
+    NO2(GT): float
+    PT08.S4(NO2): float
+    PT08.S5(O3): float
     T: float
     RH: float
     AH: float
@@ -21,7 +21,7 @@ class Item(BaseModel):
 async def predict(features: Item):
     try:
         # Load your pre-trained machine learning model
-        model = joblib.load('models/model.joblib')
+        model = joblib.load('model.joblib')
 
         # Prepare input features for prediction
         features_df = pd.DataFrame([features.dict()])
