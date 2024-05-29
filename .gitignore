@@ -1,6 +1,10 @@
 # Venv
 airqua_venv
 
+*.tmp
+*.temp
+*.bak
+
 #############
 #Default Cookie Cutter
 # Byte-compiled / optimized / DLL files
