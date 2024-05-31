@@ -5,8 +5,8 @@ stages:
     deps:
     - path: src/stages/data_load.py
       hash: md5
-      md5: 532ffdc20b6b7c37222b1bd7ad382a4c
-      size: 1513
+      md5: 26189ee6fb4d5cbc74244ecc7b0ce633
+      size: 2410
     params:
       params.yaml:
         base:
@@ -18,18 +18,18 @@ stages:
     outs:
     - path: data/raw/AirQualityUCI_cleaned.csv
       hash: md5
-      md5: 8e378a16c33f1b03f30ebadb3574ac99
+      md5: cf35f715037fd3f8cb7582669ad9f662
       size: 919505
   featurize:
     cmd: python src/stages/featurize.py --config=params.yaml
     deps:
     - path: data/raw/AirQualityUCI_cleaned.csv
       hash: md5
-      md5: 8e378a16c33f1b03f30ebadb3574ac99
+      md5: cf35f715037fd3f8cb7582669ad9f662
       size: 919505
     - path: src/stages/featurize.py
       hash: md5
-      md5: 4a6781327c97fb384bf0687a98e45084
+      md5: baf62e3ef18cef5a468c9008ea71869a
       size: 6524
     params:
       params.yaml:
@@ -42,30 +42,30 @@ stages:
           cols_to_drop:
           - Date
           - Time
-          - NMHC(GT)
-          - C6H6(GT)
-          - PT08.S1(CO)
-          - PT08.S2(NMHC)
-          - PT08.S3(NOx)
+          - NMHC_GT_
+          - C6H6_GT_
+          - PT08_S1_CO_
+          - PT08_S2_NMHC_
+          - PT08_S3_NOx_
     outs:
     - path: data/processed/csv_X_scaled_featurized.csv
       hash: md5
-      md5: 005bcd691519e9eb0e7810c9e1016bc0
+      md5: 876df592a602da8c6a58ebdbf75ad387
       size: 551509
     - path: data/processed/csv_y_featurized.csv
       hash: md5
-      md5: 52e3fd08e4be881d7b40682492befc00
+      md5: f6de73a088bab6de6452920ba6834110
       size: 71388
   data_split:
     cmd: python src/stages/data_split.py --config=params.yaml
     deps:
     - path: data/processed/csv_X_scaled_featurized.csv
       hash: md5
-      md5: 005bcd691519e9eb0e7810c9e1016bc0
+      md5: 876df592a602da8c6a58ebdbf75ad387
       size: 551509
     - path: data/processed/csv_y_featurized.csv
       hash: md5
-      md5: 52e3fd08e4be881d7b40682492befc00
+      md5: f6de73a088bab6de6452920ba6834110
       size: 71388
     - path: src/stages/data_split.py
       hash: md5
@@ -87,54 +87,54 @@ stages:
     outs:
     - path: data/splitdata/X_test.csv
       hash: md5
-      md5: 0fda18af6ca7238e9d94e05b8aa7642a
+      md5: 3acde9682f4d25b7d3a011f1c9b2a87d
       size: 106794
     - path: data/splitdata/X_test_scaled.csv
       hash: md5
-      md5: 40f062eaae54a1c6b0b282a71d2fb793
+      md5: 978bc7fd26ba5202e1241f3e89679ef9
       size: 252007
     - path: data/splitdata/X_train.csv
       hash: md5
-      md5: 869dc59267506174023963a197aabc52
+      md5: 38a627f6ddd60447d6b0d8506c2b0cd5
       size: 444263
     - path: data/splitdata/X_train_scaled.csv
       hash: md5
-      md5: 91473b80455ae74fdd181891eaa04ff3
+      md5: da51ba0d8806f92b53ac1c5b2dfc66a4
       size: 1002273
     - path: data/splitdata/y_test.csv
       hash: md5
-      md5: 6fc0db9772d185b1182235fa5cd006d4
+      md5: 1780b3e74959be4fc8e4acd8e89a9559
       size: 10512
     - path: data/splitdata/y_train.csv
       hash: md5
-      md5: 9d0af3b2387925d6a91596aab85d3082
+      md5: 85b0e1a2d57445facb3cd7adcfb95f19
       size: 59202
   train:
     cmd: python src/stages/train.py --config=params.yaml
     deps:
     - path: data/splitdata/X_test.csv
       hash: md5
-      md5: 0fda18af6ca7238e9d94e05b8aa7642a
+      md5: 3acde9682f4d25b7d3a011f1c9b2a87d
       size: 106794
     - path: data/splitdata/X_test_scaled.csv
       hash: md5
-      md5: 40f062eaae54a1c6b0b282a71d2fb793
+      md5: 978bc7fd26ba5202e1241f3e89679ef9
       size: 252007
     - path: data/splitdata/X_train.csv
       hash: md5
-      md5: 869dc59267506174023963a197aabc52
+      md5: 38a627f6ddd60447d6b0d8506c2b0cd5
       size: 444263
     - path: data/splitdata/X_train_scaled.csv
       hash: md5
-      md5: 91473b80455ae74fdd181891eaa04ff3
+      md5: da51ba0d8806f92b53ac1c5b2dfc66a4
       size: 1002273
     - path: data/splitdata/y_test.csv
       hash: md5
-      md5: 6fc0db9772d185b1182235fa5cd006d4
+      md5: 1780b3e74959be4fc8e4acd8e89a9559
       size: 10512
     - path: data/splitdata/y_train.csv
       hash: md5
-      md5: 9d0af3b2387925d6a91596aab85d3082
+      md5: 85b0e1a2d57445facb3cd7adcfb95f19
       size: 59202
     - path: src/stages/train.py
       hash: md5
@@ -172,30 +172,30 @@ stages:
     outs:
     - path: models/model.joblib
       hash: md5
-      md5: 0cc6b9c32cda681ca2d04f0f2697fd98
+      md5: 85ee148dbe1f7f18bf03ba00f1e81696
       size: 4186401
   evaluate:
     cmd: python src/stages/evaluate.py --config=params.yaml
     deps:
     - path: data/splitdata/X_test_scaled.csv
       hash: md5
-      md5: 40f062eaae54a1c6b0b282a71d2fb793
+      md5: 978bc7fd26ba5202e1241f3e89679ef9
       size: 252007
     - path: data/splitdata/X_train_scaled.csv
       hash: md5
-      md5: 91473b80455ae74fdd181891eaa04ff3
+      md5: da51ba0d8806f92b53ac1c5b2dfc66a4
       size: 1002273
     - path: data/splitdata/y_test.csv
       hash: md5
-      md5: 6fc0db9772d185b1182235fa5cd006d4
+      md5: 1780b3e74959be4fc8e4acd8e89a9559
       size: 10512
     - path: data/splitdata/y_train.csv
       hash: md5
-      md5: 9d0af3b2387925d6a91596aab85d3082
+      md5: 85b0e1a2d57445facb3cd7adcfb95f19
       size: 59202
     - path: models/model.joblib
       hash: md5
-      md5: 0cc6b9c32cda681ca2d04f0f2697fd98
+      md5: 85ee148dbe1f7f18bf03ba00f1e81696
       size: 4186401
     - path: src/stages/evaluate.py
       hash: md5

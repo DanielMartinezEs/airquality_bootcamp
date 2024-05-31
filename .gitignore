@@ -1,5 +1,6 @@
 # Venv
 airqua_venv
+venv_proy_airqua
 
 *.tmp
 *.temp

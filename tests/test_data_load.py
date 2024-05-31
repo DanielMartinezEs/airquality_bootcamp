@@ -14,8 +14,8 @@ class TestDataLoad(unittest.TestCase):
         # Prueba para verificar la integridad de las columnas.
         data_load('params.yaml')
         df = pd.read_csv(self.config['data_load']['dataset_csv_cleaned'])
-        expected_columns = ['Date', 'Time', 'CO(GT)', 'PT08.S1(CO)', 'NMHC(GT)', 'C6H6(GT)', 'PT08.S2(NMHC)',
-                            'NOx(GT)', 'PT08.S3(NOx)', 'NO2(GT)', 'PT08.S4(NO2)', 'PT08.S5(O3)', 'T', 'RH', 'AH']
+        expected_columns = ['Date', 'Time', 'CO_GT_', 'PT08_S1_CO_', 'NMHC_GT_', 'C6H6_GT_', 'PT08_S2_NMHC_',
+                            'NOx_GT_', 'PT08_S3_NOx_', 'NO2_GT_', 'PT08_S4_NO2_', 'PT08_S5_O3_', 'T', 'RH', 'AH']
         # Se comparan las columnas del DataFrame con las columnas esperadas.
         self.assertListEqual(list(df.columns), expected_columns)
 

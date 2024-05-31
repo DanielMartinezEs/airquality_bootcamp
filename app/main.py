@@ -9,10 +9,10 @@ import pandas as pd
 app = FastAPI()
 
 class Item(BaseModel):
-    NOx(GT): float
-    NO2(GT): float
-    PT08.S4(NO2): float
-    PT08.S5(O3): float
+    NOx_GT_: float
+    NO2_GT_: float
+    PT08_S4_NO2_: float
+    PT08_S5_O3_: float
     T: float
     RH: float
     AH: float

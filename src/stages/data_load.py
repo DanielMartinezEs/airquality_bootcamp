@@ -29,14 +29,33 @@ def data_load(config_path: Text) -> None:
     
     raw_data = pd.read_csv(config['data_load']['dataset_csv'], sep=';', decimal=',')
     
+        # Se definen las columnas válidas que se esperan en el dataset
+    valid_columns = [
+        'Date', 'Time', 'CO(GT)', 'PT08.S1(CO)', 'NMHC(GT)', 
+        'C6H6(GT)', 'PT08.S2(NMHC)', 'NOx(GT)', 'PT08.S3(NOx)', 
+        'NO2(GT)', 'PT08.S4(NO2)', 'PT08.S5(O3)', 'T', 'RH', 'AH'
+    ]
+   
+    # Reemplazar los caracteres '(', ')', '.' por '_'
+    valid_columns = [col.replace('(', '_').replace(')', '_').replace('.', '_') for col in valid_columns]
+
+    # Cambiar también los nombres de las columnas en el DataFrame
+    raw_data.columns = [col.replace('(', '_').replace(')', '_').replace('.', '_') for col in raw_data.columns]
+
+    # Conservar solo las columnas válidas que también existen en el DataFrame
+    raw_data = raw_data[valid_columns]
+
+    
+    # Se eliminan filas donde todos los campos relevantes son NaN
+    raw_data.dropna(how='all', inplace=True)
+    
     #Se visualiza que figuran dos columnas extra (nulas) al extremo derecho de la matriz tabular que hay que remover
-    raw_data = raw_data.iloc[:, :-2]
+    #raw_data = raw_data.iloc[:, :-2]
     #Procediendo a eliminar filas del dataset se asegura tener el dataset limpios de filas y columnas llenas de valores nulos y lograr la coincidencia de dimensión del dataset según la bibliografía.
-    raw_data = raw_data.head(9357)
+    #raw_data = raw_data.head(9357)
 
     logger.info('Save raw data cleaned')
     raw_data.to_csv(config['data_load']['dataset_csv_cleaned'], index=False)
-
 
 
 if __name__ == '__main__':

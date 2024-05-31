@@ -46,11 +46,11 @@ def featurize(config_path: Text) -> None:
 
     # Se define criterio individual (métodos de imputación) según cada variable
     imputation_methods = {
-        'CO(GT)': 'mean',
-        'NOx(GT)': 'mean',
-        'NO2(GT)': 'mean',
-        'PT08.S4(NO2)': 'mean',
-        'PT08.S5(O3)': 'mean',
+        'CO_GT_': 'mean',
+        'NOx_GT_': 'mean',
+        'NO2_GT_': 'mean',
+        'PT08_S4_NO2_': 'mean',
+        'PT08_S5_O3_': 'mean',
         'T': 'mean',
         'RH': 'mean',
         'AH': 'mean'
@@ -104,8 +104,8 @@ def featurize(config_path: Text) -> None:
     
     logger.info('Separation of X and y prior to BoxCox transformation')
 
-    X = dataframe.drop(columns=['CO(GT)'], axis=1)
-    y = dataframe['CO(GT)'] 
+    X = dataframe.drop(columns=['CO_GT_'], axis=1)
+    y = dataframe['CO_GT_'] 
     
  
     
